@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoMind — 视频智能理解</title>
+  <meta name="description" content="上传视频或粘贴链接，自动提取语音转文字并生成内容摘要。纯浏览器端运行，数据不上传服务器。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">🎬</span>
+        <span class="logo-text">VideoMind</span>
+      </a>
+      <nav class="header-nav">
+        <button class="btn btn-ghost" id="btn-settings" title="设置">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>设置</span>
+        </button>
+        <a href="https://github.com/Andrew-Pei/videomind" id="github-link" class="btn btn-ghost" target="_blank" rel="noopener" title="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">视频智能理解</h1>
+      <p class="hero-subtitle">上传视频文件或粘贴视频链接，自动提取语音转为文字，并生成结构化内容摘要</p>
+      <div class="hero-badges">
+        <span class="badge">🔒 纯浏览器端处理</span>
+        <span class="badge">🎙️ 语音转文字</span>
+        <span class="badge">📝 AI 智能摘要</span>
+      </div>
+    </section>
+
+    <!-- Input -->
+    <section class="input-section" id="input-section">
+      <div class="tabs">
+        <button class="tab active" data-tab="file">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          上传文件
+        </button>
+        <button class="tab" data-tab="url">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          视频链接
+        </button>
+      </div>
+
+      <div class="tab-content active" id="tab-file">
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-content">
+            <svg class="dropzone-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <p class="dropzone-text">拖拽视频文件到此处，或 <span class="link">点击选择</span></p>
+            <p class="dropzone-hint">支持 MP4 / WebM / MOV / AVI / MKV 等格式</p>
+          </div>
+          <input type="file" id="file-input" accept="video/*" hidden>
+        </div>
+        <div class="file-info" id="file-info" hidden>
+          <div class="file-info-icon">📹</div>
+          <div class="file-info-detail">
+            <span class="file-info-name" id="file-info-name"></span>
+            <span class="file-info-size" id="file-info-size"></span>
+          </div>
+          <button class="btn btn-icon" id="btn-clear-file" title="移除">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-url">
+        <div class="url-input-wrap">
+          <input type="url" class="input" id="url-input" placeholder="粘贴视频文件直链 (https://.../video.mp4)">
+          <button class="btn btn-primary" id="btn-load-url">加载</button>
+        </div>
+        <p class="input-hint">仅支持可直接访问的视频文件直链（需 CORS 允许）。YouTube / B站等平台链接需后端支持，暂不可用。</p>
+      </div>
+
+      <div class="action-bar" id="action-bar" hidden>
+        <button class="btn btn-primary btn-lg" id="btn-start">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          开始分析
+        </button>
+      </div>
+    </section>
+
+    <!-- Processing -->
+    <section class="process-section" id="process-section" hidden>
+      <div class="steps">
+        <div class="step" id="step-1" data-status="pending">
+          <div class="step-icon">
+            <span class="step-num">1</span>
+            <svg class="step-spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" style="opacity:0.3"/><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <svg class="step-check" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-title">音频提取</div>
+            <div class="step-desc" id="step-1-desc">等待开始...</div>
+          </div>
+          <div class="step-progress"><div class="step-progress-bar" id="step-1-bar"></div></div>
+        </div>
+        <div class="step" id="step-2" data-status="pending">
+          <div class="step-icon">
+            <span class="step-num">2</span>
+            <svg class="step-spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" style="opacity:0.3"/><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <svg class="step-check" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-title">语音转文字</div>
+            <div class="step-desc" id="step-2-desc">等待开始...</div>
+          </div>
+          <div class="step-progress"><div class="step-progress-bar" id="step-2-bar"></div></div>
+        </div>
+        <div class="step" id="step-3" data-status="pending">
+          <div class="step-icon">
+            <span class="step-num">3</span>
+            <svg class="step-spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" style="opacity:0.3"/><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <svg class="step-check" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-title">内容总结</div>
+            <div class="step-desc" id="step-3-desc">等待开始...</div>
+          </div>
+          <div class="step-progress"><div class="step-progress-bar" id="step-3-bar"></div></div>
+        </div>
+      </div>
+      <div class="log-output" id="log-output" hidden></div>
+      <div class="process-actions">
+        <button class="btn btn-ghost" id="btn-cancel" hidden>取消</button>
+        <button class="btn btn-ghost" id="btn-reset">重新开始</button>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="results-section" id="results-section" hidden>
+      <div class="result-card">
+        <div class="result-header">
+          <h2 class="result-title">📝 内容摘要</h2>
+          <div class="result-actions">
+            <button class="btn btn-ghost btn-sm" id="btn-copy-summary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              复制
+            </button>
+            <button class="btn btn-ghost btn-sm" id="btn-download-summary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              下载
+            </button>
+          </div>
+        </div>
+        <div class="result-body markdown-body" id="summary-content"></div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-header">
+          <h2 class="result-title">📄 完整转录</h2>
+          <div class="result-actions">
+            <span class="result-meta" id="transcript-meta"></span>
+            <button class="btn btn-ghost btn-sm" id="btn-copy-transcript">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              复制
+            </button>
+            <button class="btn btn-ghost btn-sm" id="btn-download-transcript">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              下载
+            </button>
+          </div>
+        </div>
+        <div class="result-body" id="transcript-content"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settings-modal" hidden>
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">⚙️ 设置</h2>
+        <button class="btn btn-icon" id="btn-close-settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">API 服务商</label>
+          <select class="input" id="setting-provider">
+            <option value="openai">OpenAI</option>
+            <option value="groq">Groq（免费额度，速度快）</option>
+            <option value="custom">自定义</option>
+          </select>
+          <p class="form-hint">选择你的 API 服务商，所有服务商均使用 OpenAI 兼容接口</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">API Base URL</label>
+          <input type="text" class="input" id="setting-base-url" placeholder="https://api.openai.com/v1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">API Key</label>
+          <input type="password" class="input" id="setting-api-key" placeholder="sk-...">
+          <p class="form-hint">密钥仅保存在浏览器本地 (localStorage)，不会上传到任何服务器</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">语音识别模型</label>
+            <input type="text" class="input" id="setting-whisper-model" placeholder="whisper-1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">摘要生成模型</label>
+            <input type="text" class="input" id="setting-chat-model" placeholder="gpt-4o-mini">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">摘要语言</label>
+          <select class="input" id="setting-summary-lang">
+            <option value="zh">中文</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+            <option value="auto">跟随原文</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btn-cancel-settings">取消</button>
+        <button class="btn btn-primary" id="btn-save-settings">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- FFmpeg loading indicator -->
+  <div class="loading-overlay" id="loading-overlay" hidden>
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="loading-text">正在加载音频处理引擎...</div>
+      <div class="loading-hint">首次加载约需 10-30 秒（~31MB），之后浏览器会缓存</div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>VideoMind — 纯浏览器端视频理解工具 · 数据不离开你的设备</p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/ffmpeg.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
